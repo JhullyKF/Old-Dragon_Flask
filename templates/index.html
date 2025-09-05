@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <title>Old Dragon</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="titulo">Old Dragon</h1>
+        <!--mostra de racas e classes -->
+        <div class="content">
+            <form action="/ficha" method="post">
+                <h2>Crie seu personagem</h2>
+                <input type="text" name="name" placeholder="Nome" required>
+                <select name="race" required>
+                    <option selected hidden>Raça</option>
+                    <option>Anão</option>
+                    <option>Elfo</option>
+                    <option>Humano</option>
+                    <option>Halfling</option>
+                </select>
+
+                <select name="classe" required>
+                    <option selected hidden>Classe</option>    
+                    <option>Mago</option>
+                    <option>Ladrão</option>
+                    <option>Guerreiro</option>
+                    <option>Clérigo</option>
+                </select>
+                <button type="submit">Criar</button>
+            </form>
+            
+            <img src="{{( url_for('static', filename='images/olddragon.png'))}}" alt="olddragon">
+        </div>
+    </div>
+        
+        
+</body>
+</html>
