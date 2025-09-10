@@ -29,11 +29,5 @@ def ficha():
 
     return render_template("page.html", name=name, race=race, classe=classe, image_file=image_file)
 
-# @app.route("/page")
-# def page():
-    
-
-#     return render_template("page.html", name=name, race=race, classe=classe, image_file=image_file)
-
 if __name__ == "__main__":
     app.run(debug=True)
