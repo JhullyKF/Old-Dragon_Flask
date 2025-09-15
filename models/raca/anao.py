@@ -1,4 +1,4 @@
-from models.raca import Raca
+from models.raca.raca import Raca
 
 class Anao(Raca):
     def __init__(self):
@@ -6,4 +6,5 @@ class Anao(Raca):
                          "ordem", habilidades=["Mineradores", "Vigoroso", "Armas grandes", 
                                                "Inimigos"])
 
-    
+    def __str__(self):
+        return super().__str__()

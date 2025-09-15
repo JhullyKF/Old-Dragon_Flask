@@ -17,34 +17,40 @@
 
 
     </nav>
-    <div class="container">
+    <section class="container">
         <h1 class="titulo">OLD DRAGON</h1>
         <!--mostra de racas e classes -->
         <div class="content">
-            <form action="/ficha" method="post">
+            <form action="{{ url_for('criar_personagem') }}" method="post">
                 <h2>Crie seu personagem</h2>
-                <input type="text" name="name" placeholder="Nome" required>
-                <select name="race" required>
+                <input type="text" name="nome" placeholder="Nome" required>
+                <select name="raca" required>
                     <option selected hidden>Raça</option>
-                    <option>Anão</option>
-                    <option>Elfo</option>
-                    <option>Humano</option>
-                    <option>Halfling</option>
+                    <option value="1">Anão</option>
+                    <option value="2">Elfo</option>
+                    <option value="3">Humano</option>
+                    <option value="4">Halfling</option>
                 </select>
 
                 <select name="classe" required>
                     <option selected hidden>Classe</option>    
-                    <option>Mago</option>
-                    <option>Ladrão</option>
-                    <option>Guerreiro</option>
-                    <option>Clérigo</option>
+                    <option value="1">Ladrão</option>
+                    <option value="2">Guerreiro</option>
+                    <option value="3">Clérigo</option>
+                </select>
+
+                <select name="aventura" required>
+                    <option selected hidden>Aventura</option>
+                    <option value="1">Clássico</option>
+                    <option value="2">Aventureiro</option>
+                    <option value="3">Heróico</option>
                 </select>
                 <button type="submit">Criar</button>
             </form>
             
             <img src="{{( url_for('static', filename='images/olddragon.png'))}}" alt="olddragon">
         </div>
-    </div>
+    </section>
         
         
 </body>

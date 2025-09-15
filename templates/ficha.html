@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <title>Old Dragon</title>
+</head>
+<body>
+    <section class="container">
+        <h1 class="titulo">Old Dragon</h1>
+        <div class="content">
+            {% if criado %}
+            <div class="ficha">
+                <h2>Ficha do personagem:</h2>
+                <P>Nome: {{ personagem.nome }}</p>
+                <p>Classe: {{ personagem.classe.titulo }}</p>
+                <p>Raça: {{ personagem.raca.titulo }}</p>
+                {% for atributo, valor in personagem.atributos.items() %}
+                    <li>{{ atributo }}: {{ valor }}</li>
+                {% endfor %}
+            </div>
+            <img src="{{ url_for('static', filename=image_file) }}" width="250"> 
+            {% else %}
+                <p>Nenhum personagem criado ainda.</p>
+            {% endif %} 
+        </div>
+    </section>
+</body>
+</html>

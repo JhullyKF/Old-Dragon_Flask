@@ -8,13 +8,5 @@ class Raca(ABC):
         self.alinhamento = alinhamento
         self.habilidades = habilidades
 
-    @abstractmethod
-    def exibir_dados(self):
-        pass
-    
-    @abstractmethod
-    def exibir_habilidades(self):
-        pass
-    
     def __str__(self):
-        return f"{self.titulo}"
+        return self.titulo

@@ -11,15 +11,3 @@ class Personagem:
             "Sabedoria": 0,
             "Carisma": 0
         }
-    
-    def get_nome(self):
-        return self.nome
-    
-    def set_nome(self, nome):
-        self.nome = nome
-    
-    def set_raca(self, raca):
-        self.raca = raca
-    
-    def set_classe(self, classe):
-        self.classe = classe

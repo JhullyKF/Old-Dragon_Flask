@@ -67,8 +67,6 @@ nav img{
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
-    border: 1px solid transparent;
 }
 .content{
     display: flex;
@@ -80,7 +78,6 @@ nav img{
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    border: 1px solid transparent;
     border-radius: 20px;
 }
 .titulo{
@@ -95,26 +92,27 @@ nav img{
     text-align: center;
 }
 form{
+    width: 25.5vw;
+    height: 65vh;
     display: flex;
     flex-direction: column;
     padding: 15px;
-    gap: 2rem;
     justify-content: center;
-    align-items: center;
+    gap: 1.5rem;
 }
 h2{
+    justify-content: center;
     display: flex;
     font-size: 2rem;
     color: white;
     font-family: Arial, Helvetica, sans-serif;
-    justify-content: center;
 }
 input{
     background-color: #292929;
-    height:3rem;
-    width: 25vw;
+    box-sizing: border-box;
+    height: 10%;
     border: 1px solid #585858;
-    border-radius: 5px;
+    border-radius: 0.5em;
     font-size: 1rem;
     color: white;
 }
@@ -137,11 +135,11 @@ input::content{
 }
 
 select{
+    box-sizing: border-box;
     background-color: #292929;
-    height: 3.2rem;
-    width: 25.5vw;
+    height: 10%;
     border: 1px solid #585858;
-    border-radius: 5px;
+    border-radius: 0.5em;
     font-size: 1rem;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
@@ -154,7 +152,7 @@ select:focus{
 
 button{
     height: 40px;
-    width: 25vw;
+    width: 25.5vw;
     background: linear-gradient(90deg, #841515, #AA691B);
     border: 1px transparent;
     border-radius: 5px;
@@ -177,7 +175,8 @@ img{
     display: flex;
     flex-direction: column;
     width: 40vw;
-    height: 55vh;
+    height: auto;
+    justify-content: space-around;
 }
 .dados{
     display: flex;
@@ -193,10 +192,19 @@ h3{
     color: #AA691B;
     font-family: Arial, Helvetica, sans-serif;
 }
-
 p{
+    margin: 0px;
+    margin-bottom: 1rem;
+}
+
+p, li{
     color: white;
     font-weight: 400;
     font-size: 1.5rem;
     font-family: Arial, Helvetica, sans-serif;
+    list-style: none;
+}
+
+li{
+    padding-bottom: 1rem;
 }

@@ -10,9 +10,5 @@ class Classe(ABC):
         self.itens = itens
         self.habilidades = habilidades
     
-    @abstractmethod
-    def exibir_dados(self):
-        pass
-    
     def __str__(self):
-        return f"{self.titulo}"
+        return self.titulo
