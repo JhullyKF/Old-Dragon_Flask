@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <title>OLD DRAGON</title>
 </head>
 <body>
@@ -10,11 +11,19 @@
      <section class="container">
         <h1 class="titulo">Old Dragon</h1>
         <div class="content">
-            <div class="ficha">
-                <h2>Atribua um valor aos atributos</h2>
-                
-                </select>
-            </div>
+            <form action="" method="post" class="atributos-form">
+                <h2>Atribua valores aos seus atributos</h2>
+                {% for atributo in personagem.atributos %}
+                    <label for="{{ atributo.lower() }}">{{ atributo }}:</label>
+                    <select name="{{ atributo.lower() }}" required>
+                        {% for r in resultados %}
+                            <option selected hidden>Selecione</option>
+                            <option value="{{ r }}">{{ r }}</option>
+                        {% endfor %}
+                    </select>
+                {% endfor %}
+                <button type="submit">Atribuir Valores</button>
+            </form>
         </div>
     </section>
 </body>
