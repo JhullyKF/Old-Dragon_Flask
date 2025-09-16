@@ -12,15 +12,13 @@
         <div class="content">
             {% if criado %}
             <div class="ficha">
-                <h2>Ficha do personagem:</h2>
-                <P>Nome: {{ personagem.nome }}</p>
-                <p>Classe: {{ personagem.classe.titulo }}</p>
-                <p>Raça: {{ personagem.raca.titulo }}</p>
+                <p class="personagem-desc"><< {{ personagem.nome }} >></p>
+                <p class="personagem-desc">{{ personagem.raca.descricao }}</p>
                 {% for atributo, valor in personagem.atributos.items() %}
-                    <li>{{ atributo }}: {{ valor }}</li>
+                    <li class="atributos-lista">{{ atributo }}: {{ valor }}</li>
                 {% endfor %}
             </div>
-            <img src="{{ url_for('static', filename=image_file) }}" width="250"> 
+            <img src="{{ url_for('static', filename=image_file) }}" alt="{{ personagem.classe.titulo }}" title="{{ personagem.classe.titulo }}"> 
             {% else %}
                 <p>Nenhum personagem criado ainda.</p>
             {% endif %} 

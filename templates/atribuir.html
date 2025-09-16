@@ -11,14 +11,14 @@
      <section class="container">
         <h1 class="titulo">Old Dragon</h1>
         <div class="content">
-            <form action="" method="post" class="atributos-form">
+            <form action="{{ url_for('atribuir_atributos') }}" method="POST" class="atributos-form">
                 <h2>Atribua valores aos seus atributos</h2>
-                {% for atributo in personagem.atributos %}
+                {% for atributo in atributos_key %}
                     <label for="{{ atributo.lower() }}">{{ atributo }}:</label>
-                    <select name="{{ atributo.lower() }}" required>
-                        {% for r in resultados %}
+                    <select name="{{ atributo.lower() }}" class="atributo-select" required>
+                        {% for id_unico, valor_resultado in resultados %}
                             <option selected hidden>Selecione</option>
-                            <option value="{{ r }}">{{ r }}</option>
+                            <option value="{{ id_unico }}">{{ valor_resultado }}</option>
                         {% endfor %}
                     </select>
                 {% endfor %}
@@ -26,5 +26,39 @@
             </form>
         </div>
     </section>
+    <script>
+    const selects = document.querySelectorAll('.atributo-select');
+
+    function atualizarOpcoes() {
+        const valoresSelecionados = new Set();
+        selects.forEach(select => {
+            if (select.value && select.value !== "Selecione") {
+                valoresSelecionados.add(select.value);
+            }
+        });
+
+        selects.forEach(selectAtual => {
+            selectAtual.querySelectorAll('option').forEach(opcao => {
+                if (opcao.value === "Selecione") {
+                    return;
+                }
+                const valorJaSelecionado = valoresSelecionados.has(opcao.value);
+                const naoEhASelecaoAtual = opcao.value !== selectAtual.value;
+
+                if (valorJaSelecionado && naoEhASelecaoAtual) {
+                    opcao.disabled = true;
+                } else {
+                    opcao.disabled = false;
+                }
+            });
+        });
+    }
+
+    selects.forEach(select => {
+        select.addEventListener('change', atualizarOpcoes);
+    });
+
+    document.addEventListener('DOMContentLoaded', atualizarOpcoes);
+</script>
 </body>
 </html>

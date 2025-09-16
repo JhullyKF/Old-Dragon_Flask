@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request, url_for, render_template
+from flask import Flask, redirect, request, session, url_for, render_template
 from models.personagem import Personagem
 
 from models.raca.humano import Humano
@@ -10,6 +10,8 @@ from models.classe.clerigo import Clerigo
 from models.classe.ladrao import Ladrao
 from uteis.dado import Dado
 app = Flask(__name__)
+app.secret_key = 'minha_chave_secreta_aqui' 
+
 
 @app.route("/")
 def index():
@@ -18,22 +20,27 @@ def index():
 @app.route("/criar-personagem", methods=["POST"])
 def criar_personagem():
     if request.method == "POST":
-        nome = request.form["nome"]
-        raca_value = int(request.form["raca"])
-        classe_value = int(request.form["classe"])
+        session['nome'] = request.form["nome"]
+        session['raca_value'] = int(request.form["raca"])
+        session['classe_value'] = int(request.form["classe"])
         aventura_value = int(request.form["aventura"])
-
-        raca = define_raca(raca_value)
-        classe = define_classe(classe_value)
         
-        personagem = Personagem(nome, raca, classe)
 
-        match aventura_value:
-            case 1: aventura_classica(personagem)
-            case 2: aventura_aventureira(personagem)
-
-        image_file = define_imagem(personagem)
-        return render_template("ficha.html", personagem=personagem, criado=True, image_file=image_file)
+        if aventura_value == 1:
+            personagem = Personagem(session.get('nome'), define_raca(session.get('raca_value')), define_classe(session.get('classe_value')))
+            image_file = define_imagem(personagem.classe)
+            resultados = [Dado.rodar_3d6() for _ in range(6)]
+            for i, a in enumerate(personagem.atributos):
+                personagem.atributos[a] = resultados[i]
+            return render_template("ficha.html", personagem=personagem, criado=True, image_file=image_file)
+        elif aventura_value == 2:
+            resultados = sorted([Dado.rodar_3d6() for _ in range(6)], reverse=True) 
+            session['resultados'] = resultados
+            resultados_com_id = list(enumerate(resultados)) 
+            atributos_key =["Forca", "Destreza", "Constituicao", "Inteligencia", "Sabedoria", "Carisma"]
+            return render_template("atribuir.html", atributos_key=atributos_key, resultados=resultados_com_id)
+        else:
+            return render_template("teste.html")        
 
 def define_raca(raca_value):
     match raca_value:
@@ -55,25 +62,30 @@ def define_classe(classe_id):
         case _:
             return Clerigo()
 
-def define_imagem(personagem):
+def define_imagem(classe):
     images={
             "Mago": "images/mago.png",
             "Ladrão": "images/ladrao.png",
             "Guerreiro": "images/guerreiro.png",
             "Clérigo": "images/clerigo.png"
         }
-    return images.get(personagem.classe.titulo)
+    return images.get(classe.titulo)
 
-def aventura_classica(personagem):
-    resultados = [Dado.rodar_3d6() for _ in range(6)]
+@app.route("/definir-atributos", methods=["POST", "GET"])
+def atribuir_atributos():
+    personagem = Personagem(session.get('nome'), define_raca(session.get('raca_value')), define_classe(session.get('classe_value')))
+    resultados = session.get('resultados')
 
-    for i, a in enumerate(personagem.atributos):
-        personagem.atributos[a] = resultados[i]
-
-def aventura_aventureira(personagem):
-    resultados = [Dado.rodar_3d6() for _ in range(6)]
-    redirect(url_for("atribuir.html"), resultados)
-
+    for atributo in personagem.atributos.keys():
+        chave_do_form = atributo.lower()
+        id_selecionado_str = request.form.get(chave_do_form)
+        
+        if id_selecionado_str:
+            id_selecionado = int(id_selecionado_str)
+            valor_final = resultados[id_selecionado]
+            personagem.atributos[atributo] = valor_final
+    image_file = define_imagem(personagem.classe)
+    return render_template("ficha.html", personagem=personagem, criado=True, image_file=image_file)
 
 
 if __name__ == "__main__":
