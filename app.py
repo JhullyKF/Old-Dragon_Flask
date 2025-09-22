@@ -20,7 +20,7 @@ def index():
 @app.route("/criar-personagem", methods=["POST"])
 def criar_personagem():
     if request.method == "POST":
-        session['nome'] = request.form["nome"]
+        session['nome'] = request.form["nome"].capitalize()
         session['raca_value'] = int(request.form["raca"])
         session['classe_value'] = int(request.form["classe"])
         aventura_value = int(request.form["aventura"])
@@ -33,14 +33,28 @@ def criar_personagem():
             for i, a in enumerate(personagem.atributos):
                 personagem.atributos[a] = resultados[i]
             return render_template("ficha.html", personagem=personagem, criado=True, image_file=image_file)
+        
         elif aventura_value == 2:
             resultados = sorted([Dado.rodar_3d6() for _ in range(6)], reverse=True) 
+            print(resultados)
+            return salva_dados_aventura(resultados)
+        
+        elif aventura_value == 3:
+            resultados = []
+            valores = sorted([Dado.rodar_4d6() for _ in range(6)])
+            print("valores: ", valores)
+            for v in sorted(valores):
+                resultado = sum(sorted(v)[1:])
+                resultados.append(resultado)
+            print(resultados)
+            return salva_dados_aventura(resultados)  
+
+def salva_dados_aventura(resultados):
             session['resultados'] = resultados
             resultados_com_id = list(enumerate(resultados)) 
-            atributos_key =["Forca", "Destreza", "Constituicao", "Inteligencia", "Sabedoria", "Carisma"]
-            return render_template("atribuir.html", atributos_key=atributos_key, resultados=resultados_com_id)
-        else:
-            return render_template("teste.html")        
+            session['atributos_key'] =["Forca", "Destreza", "Constituicao", "Inteligencia", "Sabedoria", "Carisma"]
+            return render_template("atribuir.html", atributos_key=session.get('atributos_key'), resultados=resultados_com_id)
+
 
 def define_raca(raca_value):
     match raca_value:
@@ -76,7 +90,7 @@ def atribuir_atributos():
     personagem = Personagem(session.get('nome'), define_raca(session.get('raca_value')), define_classe(session.get('classe_value')))
     resultados = session.get('resultados')
 
-    for atributo in personagem.atributos.keys():
+    for atributo in session.get('atributos_key'):
         chave_do_form = atributo.lower()
         id_selecionado_str = request.form.get(chave_do_form)
         
