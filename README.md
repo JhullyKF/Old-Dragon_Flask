@@ -19,7 +19,7 @@ Este projeto é uma aplicação web desenvolvida em Python com o microframework 
 
 -----
 
-## 🖼️ Interface da Aplicação
+## Interface da Aplicação
 
 A interface foi projetada com uma temática escura, inspirada na fantasia medieval dos jogos de RPG.
 
