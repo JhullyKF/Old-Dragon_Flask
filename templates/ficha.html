@@ -17,6 +17,10 @@
                 {% for atributo, valor in personagem.atributos.items() %}
                     <li class="atributos-lista">{{ atributo }}: {{ valor }}</li>
                 {% endfor %}
+
+                <form action="{{ url_for('index') }}" method="GET" class="form-ficha">
+                    <button type="submit">Criar Novo Personagem</button>
+                </form>
             </div>
             <img src="{{ url_for('static', filename=image_file) }}" alt="{{ personagem.classe.titulo }}" title="{{ personagem.classe.titulo }}"> 
             {% else %}

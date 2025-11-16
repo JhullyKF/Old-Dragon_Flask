@@ -1,4 +1,5 @@
 from flask import Flask, redirect, request, session, url_for, render_template
+import json
 from models.personagem import Personagem
 
 from models.raca.humano import Humano
@@ -11,7 +12,7 @@ from models.classe.ladrao import Ladrao
 from uteis.dado import Dado
 app = Flask(__name__)
 app.secret_key = 'minha_chave_secreta_aqui' 
-
+JSON_FILE_PATH = 'personagens_salvos.json'
 
 @app.route("/")
 def index():
@@ -32,6 +33,7 @@ def criar_personagem():
             resultados = [Dado.rodar_3d6() for _ in range(6)]
             for i, a in enumerate(personagem.atributos):
                 personagem.atributos[a] = resultados[i]
+            salvar_personagem(personagem)
             return render_template("ficha.html", personagem=personagem, criado=True, image_file=image_file)
         
         elif aventura_value == 2:
@@ -85,6 +87,28 @@ def define_imagem(classe):
         }
     return images.get(classe.titulo)
 
+def salvar_personagem(personagem):
+    personagem_dict = personagem.__dict__.copy()
+    personagem_dict['raca'] = personagem.raca.__dict__
+    personagem_dict['classe'] = personagem.classe.__dict__
+    personagens_lista = []
+    
+    try:
+        with open(JSON_FILE_PATH, 'r', encoding='utf-8') as f:
+            personagens_lista = json.load(f)
+            if not isinstance(personagens_lista, list):
+                personagens_lista = []
+    except (FileNotFoundError, json.JSONDecodeError):
+        personagens_lista = []
+
+    personagens_lista.append(personagem_dict)
+
+    try:
+        with open(JSON_FILE_PATH, 'w', encoding='utf-8') as f:
+            json.dump(personagens_lista, f, ensure_ascii=False, indent=4)
+    except IOError as e:
+        print(f"ERRO: Não foi possível salvar o arquivo JSON: {e}")
+
 @app.route("/definir-atributos", methods=["POST", "GET"])
 def atribuir_atributos():
     personagem = Personagem(session.get('nome'), define_raca(session.get('raca_value')), define_classe(session.get('classe_value')))
@@ -98,6 +122,7 @@ def atribuir_atributos():
             id_selecionado = int(id_selecionado_str)
             valor_final = resultados[id_selecionado]
             personagem.atributos[atributo] = valor_final
+    salvar_personagem(personagem)
     image_file = define_imagem(personagem.classe)
     return render_template("ficha.html", personagem=personagem, criado=True, image_file=image_file)
 

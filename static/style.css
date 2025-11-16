@@ -96,6 +96,9 @@ form, .atributos-form{
     gap: 1.5rem;
     
 }
+.form-ficha{
+    height: auto;
+}
 
 .atributos-form{
     gap: 15px;
@@ -179,7 +182,6 @@ img{
     height: 65vh;
     border: 1px transparent;
     border-radius: 10px;
-    
 }
 
 
